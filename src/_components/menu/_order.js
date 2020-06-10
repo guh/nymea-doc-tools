@@ -14,10 +14,6 @@ export const menuOrder = [
         title: 'About nymea'
       },
       {
-        filename: 'nymea-in-action',
-        title: 'Nymea in action'
-      },
-      {
         filename: 'integrations',
         title: 'Integrations'
       },
