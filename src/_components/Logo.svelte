@@ -8,7 +8,8 @@
 
 <style>
   a {
-    display: block;
+    align-items: center;
+    display: flex;
   }
   
   a,

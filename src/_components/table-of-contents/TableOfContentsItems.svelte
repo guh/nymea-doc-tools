@@ -1,6 +1,7 @@
 <script>
-  import { url } from '@sveltech/routify';
+  import { afterPageLoad, beforeUrlChange, params, route, url } from '@sveltech/routify';
 
+  export let level = 0;
   export let items = [];
 
   function scrollTo(link) {
@@ -18,25 +19,90 @@
     //   window.location.hash = '#' + link;
     // }
   }
+
+  // Used because $isActive() helper does not work with urls with query strings
+  // TODO: When there is a routify update, check if it starts working
+  function isActive(item) {
+    if (item.link) {
+      if (item.link.startsWith('#')) {
+        return encodeURI(item.link) === location.hash;
+      } else if (item.link.startsWith('?')) {
+        const locationQueryObject = getQueryObject(location.search);
+        const itemLinkQueryObject = getQueryObject(item.link);
+
+        return Object.entries(itemLinkQueryObject).reduce((isActive, [key, value]) => {
+          return isActive && locationQueryObject.hasOwnProperty(key) && locationQueryObject[key] === value;
+        }, true);
+      }
+    } else {
+      return `${$route.path}/${item.link}`=== location.pathname;
+    }
+  }
+
+  function getQueryObject(queryString) {
+    return queryString.replace('?', '').split('&').reduce((object, keyValueString) => {
+      const [key, value] = keyValueString.split('=');
+      object[key] = value;
+      return object;
+    }, {});
+  }
+
+  function getQueryArray() {
+    const queryArray = location.search.replace('?', '').split('&').reduce((array, keyValueString) => {
+      const [key, value] = keyValueString.split('=');
+      return [
+        ...array,
+        { key, value }
+      ];
+    }, []);
+    console.log('isActive search - getQueryArray()', queryArray);
+    return queryArray;
+  }
 </script>
 
 <style>
-  ul > li > :global(ul) {
-    margin-left: 0.85em;
+  .toc-items.level-0 {
+    padding-left: 0;
+  }
+  .toc-items {
+    padding-left: 0.75rem;
   }
 
-  a {
-    /* color: var(--text-color); */
-    color: var(--grey-base);
-    /* position: relative; */
-    text-decoration: none;
+  li {
+    position: relative;
   }
 
-  a::before {
-    content: "#\00a0";
-    color: var(--silver-darken-20);
-    /* position: absolute;
-      left: -1em; */
+  li a {
+    display: block;
+  }
+
+  li > a,
+  li > div {
+    padding-left: calc((var(--level) - 2) * 0.75rem);
+  }
+
+  li a::before {
+    border-radius: 0.125rem;
+    content: "";
+    height: calc(1.5rem - 2px);
+    position: absolute;
+    left: calc(-1 * var(--space-09));
+    top: 0;
+    width: 0.25rem;
+  }
+
+  a.active::before {
+    background-color: var(--turquoise-base);
+  }
+
+
+  a.active {
+    color: var(--text-color);
+    font-weight: 600;
+  }
+
+  a:hover::before {
+    background-color: var(--grey-base);
   }
 
   a:hover {
@@ -44,33 +110,41 @@
     text-decoration: underline;
   }
 
-  a:hover::before {
-    color: var(--green-base);
-    display: inline-block;
+  div {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: var(--space-07);
+    text-transform: uppercase;
+  }
+
+  div + :global(.toc-items) {
+    padding-left: 0;
+  }
+
+  div + .toc-items li::before {
+    left: calc(-3rem - (var(--level) - 2) * 0.75rem - 1px);
+  }
+
+  a {
+    color: var(--grey-base);
+    font-size: 0.8rem;
     text-decoration: none;
   }
 </style>
 
-<!-- <pre>{JSON.stringify(items)}</pre> -->
-
-<ul class="toc">
+<ul class="toc-items level-{level}">
   {#each items as item, index}
     {#if !Array.isArray(item)}
-      <li>
-        <!-- <a href={"#" + $url(item.link)} on:click|preventDefault={() => scrollTo(item.link)}>{item.text}</a> -->
-        <a href={$url("#" + item.link)}>{item.text}</a>
+      <li>        
+        {#if item.link && item.link !== ''}
+          <a class:active={item.active || isActive(item)} style="--level: {item.level}" href={$url(item.link)}>{item.label}</a>
+        {:else}
+          <div style="--level: {item.level}">{item.label}</div>
+        {/if}
         {#if index + 1 < items.length && Array.isArray(items[index + 1])}
-          <svelte:self items={items[index + 1]} />
+          <svelte:self items={items[index + 1]} level={level + 1} />
         {/if}
       </li>
     {/if}
-
-    <!-- <li>
-      {#if Array.isArray(item)}
-        <svelte:self items={item} />
-      {:else}
-        <a href={$url(item.link)}>{item.text}</a>
-      {/if}
-    </li> -->
   {/each}
 </ul>

@@ -1,0 +1,193 @@
+[
+  {
+    "filename": "documentation",
+    "title": "Documentation",
+    "children": [
+      {
+        "filename": "overview",
+        "title": "Overview",
+        "children": [
+          {
+            "filename": "about-nymea",
+            "title": "About nymea"
+          },
+          {
+            "filename": "nymea-in-action",
+            "title": "Nymea in action"
+          },
+          {
+            "filename": "features",
+            "title": "Features"
+          },
+          {
+            "filename": "license",
+            "title": "License"
+          },
+          {
+            "filename": "roadmap",
+            "title": "Roadmap"
+          },
+          {
+            "filename": "changelog",
+            "title": "Changelog"
+          },
+          {
+            "filename": "faq",
+            "title": "Frequently asked questions"
+          },
+          {
+            "filename": "contribute",
+            "title": "Contribute"
+          }
+
+        ]
+      },
+      {
+        "filename": "users",
+        "title": "Users",
+        "children": [
+          {
+            "filename": "installation",
+            "title": "Installation",
+            "children": [
+              {
+                "filename": "getting-started",
+                "title": "Getting started"
+              },
+              {
+                "filename": "core",
+                "title": "nymea:core"
+              },
+              {
+                "filename": "app",
+                "title": "nymea:app"
+              }
+            ]
+          },
+          {
+            "filename": "usage",
+            "title": "Usage",
+            "children":[
+              {
+                "filename": "first-steps",
+                "title": "First steps"
+              },
+              {
+                "filename": "things",
+                "title": "Connecting things"
+              },
+              {
+                "filename": "rules",
+                "title": "Smart rules"
+              },
+              {
+                "filename": "scripting",
+                "title": "Scripting"
+              },
+              {
+                "filename": "configuration",
+                "title": "Configuration"
+              },
+              {
+                "filename": "remote-connection",
+                "title": "Cloud connection"
+              },
+              {
+                "filename": "advanced-configuration",
+                "title": "Advanced configuration"
+              }
+            ]
+          },
+          {
+            "filename": "advancedusage",
+            "title": "Advanced usage",
+            "children": [
+              {
+                "filename": "sensor-on-mqtt-server",
+                "title": "Publishing sensor values to nymea via MQTT"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "filename": "developers",
+        "title": "Developers",
+        "children": [
+          {
+            "filename": "build-env",
+            "title": "Build environment"
+          },
+          {
+            "filename": "build-nymea",
+            "title": "Building nymea"
+          },
+          {
+            "filename": "developing-with-qt-creator",
+            "title": "Developing with QtCreator"
+          },
+          {
+            "filename": "write-plugins",
+            "title": "Plugin development"
+          },
+          {
+            "filename": "integrations",
+            "title": "Integration plugins",
+            "children": [
+              {
+                "filename": "getting-started-integration",
+                "title": "Getting started"
+              },
+              {
+                "filename": "thing-class",
+                "title": "Things classes"
+              },
+              {
+                "filename": "thing-setup",
+                "title": "Things setup"
+              },
+              {
+                "filename": "creating-a-new-plugin",
+                "title": "Creating a new plugin"
+              },
+              {
+                "filename": "plugin-json",
+                "title": "The plugin JSON file"
+              },
+              {
+                "filename": "plugin-code",
+                "title": "The plugin code"
+              },
+              {
+                "filename": "building-testing",
+                "title": "Building & testing"
+              }
+            ]
+          },
+          {
+            "filename": "clients",
+            "title": "Client development",
+            "children": [
+              {
+                "filename": "client-development",
+                "title": "Introduction"
+              },
+              {
+                "filename": "json-rpc",
+                "title": "JSON-RPC"
+              },
+              {
+                "filename": "nymea-app-lib",
+                "title": "C++/Qt/QML"
+              },
+              {
+                "filename": "nymea-cli-dev",
+                "title": "Python"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

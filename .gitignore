@@ -5,8 +5,10 @@
 *_meta.js
 toos/src/
 src/pages/documentation/overview/integrations/*.md
+src/pages/documentation/resources/integrations/*.md
 src/pages/documentation/developers/integrations/interfaces.md
 src/pages/documentation/developers/clients/raw-api.md
 src/pages/documentation/developers/integrations/plugin-json.md
 src/pages/documentation/developers/clients/raw-api.js
+src/pages/documentation/resources/api/api.js
 static/img/integrationlogos/

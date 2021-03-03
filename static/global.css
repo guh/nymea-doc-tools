@@ -90,6 +90,8 @@ select {
 
 :root {
   --white: hsl(0, 0%, 99%);
+  /* --white-tranparent: hsla(0, 0%, 99%, 0.9); */
+  --white-tranparent: rgba(255, 255, 255, 0.9);
 
   --silver-base: hsl(0, 0%, 98%);
   --silver-transparent-base: hsla(0, 0%, 98%, 0.9);
@@ -129,11 +131,19 @@ select {
 	--space-10: calc(6 * var(--space-unit));
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
 body {
   font-family: 'Ubuntu', Roboto, -apple-system, Helvetica Neue, sans-serif;
 }
 
-body.noscroll {
+body.noscroll-navigation,
+body.noscroll-sidebar-one,
+body.noscroll-sidebar-two {
   overflow: hidden;
 }
 
@@ -206,11 +216,11 @@ code {
 }
 
 blockquote {
-  background-color: #fafafa;
-  border-left: 5px solid #efefef;
-  border-radius: 5px;
+  background-color: var(--silver-base);
+  border-left: 0.25rem solid var(--silver-darken-20);
+  border-radius: 0.25rem;
   margin: 1.5rem 0;
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 1.5rem 1.25rem;
 }
 
 blockquote > p {
@@ -222,6 +232,7 @@ blockquote > p {
 
 
 .cookieConsentToggle {
+  display: none;
   /* width: 40px;
   height: 40px; */
   height: var(--space-09);

@@ -1,27 +1,16 @@
 <script>
-  import { onMount } from 'svelte';
-  import { isActive, url, layout, route, routes } from '@sveltech/routify';
   import GdprBanner from '@beyonk/gdpr-cookie-consent-banner';
-  // import '@beyonk/gdpr-cookie-consent-banner/dist/style.css';
-
   import Content from '../_components/layout/Content.svelte';
   import Footer from '../_components/layout/Footer.svelte';
-  import Header from '../_components/layout/Header.svelte';
+  import Header from '../_components/page-layout/Header.svelte';
+  import Navigation from '../_components/Navigation.svelte';
   import Layout from '../_components/layout/Layout.svelte';
-  import Sider from '../_components/layout/Sider.svelte';
-
-  import Col from '../_components/grid/Col.svelte';
-  import Grid from '../_components/grid/Grid.svelte';
-  import Row from '../_components/grid/Row.svelte';
-
   import Logo from '../_components/Logo.svelte';
-  import Nav from '../_components/Nav.svelte';
-  import ExternalNav from '../_components/ExternalNav.svelte';
 
   let gdprBannerConfig = {
     cookieName: 'nymea_gdpr',
     cookieConfig: {
-      domain: 'nymea.io',
+      domain: window.process.env.GDPR_COOKIE_DOMAIN,
       path: '/'
     },
     heading: 'We care about your privacy.',
@@ -54,17 +43,21 @@
 
 <style>
   :root {
+    --header-background: rgba(255, 255, 255, 0.9);
     --header-height: 4.5rem;
     --sider-height: calc(100vh - var(--header-height));
   }
 
-  .header .branding {
-    display: flex;
+  .header {
     height: var(--header-height);
   }
 
-  .header .branding > :global(a) {
-    align-self: center;
+  .header > :global(header) {
+    border-bottom: 1px solid var(--header-border-color);
+  }
+
+  .header :global(.navigation-wrapper)  {
+    border-left: 0;
   }
 
   :global(.layout .content-wrapper) [slot="content"] {
@@ -72,22 +65,19 @@
   }
 </style>
 
-<!-- <Layout width="80%"> -->
 <Layout
   width={{'xs': '100%', 'sm': '100%', 'md': '100%', 'lg': '100%', 'xl': '100%'}}
   contentSpan={{'xs': 12, 'sm': 12, 'md': 12, 'lg': 12, 'xl': 12}}
 >
   <div slot="header" class="slot header">
-    <Header >
-      <div slot="branding" class="branding">
+    <Header>
+      <div slot="branding" class="branding header">
         <Logo height="3rem" />
       </div>
-      <div slot="navigation">
-        <Nav />
-      </div>
-      <div slot="actions">
-        <ExternalNav />
-      </div>
+      <nav slot="navigation" class="navigation header">
+        <Navigation />
+      </nav>
+      <div slot="links"></div>
     </Header>
   </div>
   <div slot="content" class="slot">

@@ -5,7 +5,7 @@
   import { initCodeBlocks } from '../../_documentation-utils.js';
 
   onMount(() => {
-    initCodeBlocks();
+    // initCodeBlocks();
   });
 
   Object.entries(api.methods).forEach(([methodKey, methodValue]) => {

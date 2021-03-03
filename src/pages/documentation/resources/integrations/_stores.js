@@ -29,11 +29,11 @@ function filterBySearch(integration, searchInput) {
 }
 
 function snakeCaseToUserReadable(input) {
-  return input.split('-').map((word) => word.charAt(0).toUpperCase() + word.substr(1)).join(' ');
+  return input && input.split('-').map((word) => word.charAt(0).toUpperCase() + word.substr(1)).join(' ');
 }
 
 function userReadableToSnakeCase(input) {
-  return input.replace(' ', '-').toLowerCase();
+  return input && input.replace(' ', '-').toLowerCase();
 }
 
 function createCurrent() {
@@ -44,6 +44,14 @@ function createCurrent() {
     set: (current) => set(userReadableToSnakeCase(current)),
     reset: () => set(null)
   };
+}
+
+function getVendors(plugin) {
+  return Object.keys(plugin.things).map((vendor) => vendor);
+}
+
+function getThings(plugin) {
+  return Object.keys(plugin.things).reduce((things, vendor) => { return things = things.concat(plugin.things[vendor]); }, []);
 }
 
 // Search
@@ -59,7 +67,6 @@ export const categories = readable([], function start(set) {
     }, ['other'])
     .reduce((categories, category) => removeDuplicates(categories, category), [])
     .map((category) => {
-      console.log('category', category);
       return {
         title: snakeCaseToUserReadable(category),
         count: category === 'other'
@@ -76,6 +83,46 @@ export const categories = readable([], function start(set) {
 	return function stop() {};
 });
 
+// Offline 
+export const currentOffline = createCurrent();
+
+export const offline = readable([], function start(set) {
+  const privacyTypes = [
+    {
+      label: 'Online'
+    },
+    {
+      label: 'Offline'
+    }
+  ];
+
+  set(privacyTypes);
+
+  return function stop() {};
+});
+
+// Stability
+export const currentStability = createCurrent();
+
+export const stabilityTypes = readable([], function start(set) {
+  const stabilityTypes = meta
+    .reduce((stabilityTypes, plugin) => {
+      stabilityTypes.push(plugin.stability);
+      return stabilityTypes;
+    }, [])
+    .reduce((stabilityTypes, stability) => removeDuplicates(stabilityTypes, stability), [])
+    .map((stability) => {
+      return {
+        label: snakeCaseToUserReadable(stability)
+      };
+    })
+    .sort((categoryA, categoryB) => sortByName(categoryA, categoryB, 'label'));
+
+  set(stabilityTypes);
+
+  return function stop() {};
+});
+
 // Technologies
 export const currentTechnology = createCurrent();
 
@@ -86,7 +133,6 @@ export const technologies = readable([], function start(set) {
     }, ['other'])
     .reduce((technologies, technology) => removeDuplicates(technologies, technology), [])
     .map((technology) => {
-      meta.map((integration) => console.log('integration', integration.title, integration.technologies));
       return {
         title: snakeCaseToUserReadable(technology),
         count: technology === 'other'
@@ -124,10 +170,10 @@ export const integrations = readable([], function start(set) {
   return function stop() {};
 });
 
-export const filteredIntegrations = derived([integrations, categories, currentCategory, currentTechnology, searchInput], ([$integrations, $categories, $currentCategory, $currentTechnology, $searchInput]) => {
+export const filteredIntegrations = derived([integrations, categories, currentCategory, currentOffline, currentStability, currentTechnology, searchInput], ([$integrations, $categories, $currentCategory, $currentOffline, $currentStability, $currentTechnology, $searchInput]) => {
   const integrations = $integrations.filter((integration) => {
     return (
-      $currentCategory === null
+        $currentCategory === null
         || (
           $currentCategory === 'other'
             ? integration.categories.length === 0
@@ -135,11 +181,22 @@ export const filteredIntegrations = derived([integrations, categories, currentCa
         )
       )
       && (
+        $currentOffline === null
+        || (
+          $currentOffline === (integration.offline === true ? 'offline' : 'online')
+        )
+      )
+      && (
+        $currentStability === null || integration.stability === $currentStability
+      )
+      && (
         $currentTechnology === null
         || (
           $currentTechnology === 'other'
             ? integration.technologies.length === 0
-            : integration.technologies.find((technology) => technology === $currentTechnology) !== undefined
+            : integration.technologies.find((technology) => {
+              return technology === $currentTechnology;
+            }) !== undefined
         )
       );
   })
@@ -182,16 +239,8 @@ export const things = derived([vendors], ([$vendors]) => {
     .reduce((things, thing) => removeDuplicates(things, thing), [])
     .map((thing) => {
       return {
-        title: snakeCaseToUserReadable(thing),
+        label: snakeCaseToUserReadable(thing),
       };
     })
-    .sort((thingA, thingB) => sortByName(thingA, thingB, 'title'));
+    .sort((thingA, thingB) => sortByName(thingA, thingB, 'label'));
 });
-
-function getVendors(plugin) {
-  return Object.keys(plugin.things).map((vendor) => vendor);
-}
-
-function getThings(plugin) {
-  return Object.keys(plugin.things).reduce((things, vendor) => { return things = things.concat(plugin.things[vendor]); }, []);
-}

@@ -1,5 +1,5 @@
 ---
-id: firststeps
+id: first-steps
 title: First steps
 ---
 

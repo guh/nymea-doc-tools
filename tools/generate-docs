@@ -10,3 +10,4 @@ echo "Building docs from branches $branch"
 ./generate-interfaces-list.py $branch
 ./generate-plugins-list.py $branch
 ./generate-jsonrpc-api.py $branch
+./generate-menu.py

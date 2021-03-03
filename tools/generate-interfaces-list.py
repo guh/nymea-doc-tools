@@ -56,7 +56,7 @@ def insert_in_tree(tree, iface):
 
   if isinstance(iface["extends"], str):
     for tmp in tree:
-      print("1 looking for iface", iface["extends"], "in", tmp["name"])
+#      print("1 looking for iface", iface["extends"], "in", tmp["name"])
       if tmp["name"] == iface["extends"]:
         if iface not in tmp["childs"]:
           tmp["childs"].append(iface)
@@ -69,7 +69,7 @@ def insert_in_tree(tree, iface):
   found = 0
   for extend in iface["extends"]:
     for tmp in tree:
-      print("2 looking for iface", extend, "in", tmp["name"])
+#      print("2 looking for iface", extend, "in", tmp["name"])
       if tmp["name"] == extend:
         if iface not in tmp["childs"]:
           tmp["childs"].append(iface)
@@ -101,7 +101,7 @@ def build_tree(interfaces):
         notInserted[ifaceName] = iface
       doAgain = doAgain or not inserted
     interfaces = notInserted
-    print("tree is now %i of %i" % (len(tree), len(interfaces)))
+#    print("tree is now %i of %i" % (len(tree), len(interfaces)))
 #    return tree
   return tree
 
